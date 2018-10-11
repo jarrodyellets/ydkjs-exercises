@@ -218,7 +218,7 @@ const Ch2Questions = [
   },
   {
     question:
-      'In which of these cases we would probably be safe using `==` rather than `===` for comparison?',
+      'In which of these cases would we probably be safe using == rather than === for comparison?',
     questionId: 'XGobn8UO1CAa0GGempf4',
     shouldBeRandomized: false,
     answers: [
@@ -246,7 +246,7 @@ const Ch2Questions = [
   },
   {
     question:
-      'If `a === 5`, which of the following is a correct use of the ternary operator `AND` returns `true`?',
+      'If `a === 5`, which of the following is a correct use of the ternary operator and returns `true`?',
     questionId: 'eJGjIHoFLjFgwBCVMfE0',
     shouldBeRandomized: false,
     answers: [
@@ -316,7 +316,7 @@ const Ch2Questions = [
     questionId: 'FI4eixvGsXC1CcVfk9EU',
     shouldBeRandomized: false,
     answers: [
-      { text: '`StntaxError`', id: 0 },
+      { text: '`SyntaxError`', id: 0 },
       { text: '`ReferenceError`', id: 1 },
       { text: '`InternalError`', id: 2 },
       { text: '`TypeError`', id: 3 },
@@ -362,14 +362,15 @@ const Ch2Questions = [
       'To invoke strict mode for an entire script, put the exact statement `use strict`;',
   },
   {
-    question: 'Which of these will immediately print `Hello` to the console?',
+    question:
+      'Which of the lines below will print `"Hello"` to the console when executed?',
     questionId: 'pdnSBOr7Cy4Q6TeZeOpI',
     shouldBeRandomized: false,
     answers: [
-      { text: '`(function IIFE(){ console( "Hello!" ); })();`', id: 0 },
-      { text: '`function IIFE(){ console.log( "Hello!" ); }();`', id: 1 },
-      { text: '`function IIFE(){ console.log( "Hello!" ); }`', id: 2 },
-      { text: '`(function IIFE(){ console.log( "Hello!" ); })();`', id: 3 },
+      { text: '`(function (){ console( "Hello!" ); })();`', id: 0 },
+      { text: '`function (){ console.log( "Hello!" ); }();`', id: 1 },
+      { text: '`function (){ console.log( "Hello!" ); }`', id: 2 },
+      { text: '`(function (){ console.log( "Hello!" ); })();`', id: 3 },
     ],
     correctAnswerId: 3,
     moreInfoUrl:
@@ -442,6 +443,36 @@ const Ch2Questions = [
     explanation: `Transpiling is using a tool that converts your newer code into older code equivalents. The term combines the terms for transforming + compiling. 
     Essentially, your source code is authored in the new syntax form, but what you deploy to the browser is the transpiled code in old syntax form. 
     You typically insert the transpiler into your build process, similar to your code linter or your minifier.`,
+  },
+  {
+    question:
+      'Which of the following expressions is controlled by JavaScript specification?',
+    questionId: 'g05Klu0UEqgXh9BLBY8c',
+    shouldBeRandomized: true,
+    answers: [
+      {
+        text: '`var el = document.getElementById( "foo" );`',
+        id: 0,
+      },
+      {
+        text: '`console.log("Hello World!");`',
+        id: 1,
+      },
+      {
+        text: '`alert(document.URL);`',
+        id: 2,
+      },
+      {
+        text: '`var a = Object.assign({}, { foo : "bar"})`',
+        id: 3,
+      },
+    ],
+    correctAnswerId: 3,
+    moreInfoUrl:
+      'https://github.com/getify/You-Dont-Know-JS/blob/master/up%20%26%20going/ch2.md#non-javascript',
+    explanation: `The document variable exists as a global variable when your code is running in a browser. It's not provided by the JS engine, nor is it particularly controlled by the JavaScript specification.
+    Similarly alert(..) and console.log(..) is provided to your JS program by the browser, not by the JS engine itself. The call you make sends the message to the browser internals and it handles drawing, displaying the message box or logging the message to console. 
+    `,
   },
 ];
 

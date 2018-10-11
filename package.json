@@ -35,8 +35,8 @@
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
     "raf": "3.4.0",
-    "react": "^16.4.0",
-    "react-dev-utils": "^5.0.1",
+    "react": "^16.5.2",
+    "react-dev-utils": "^5.0.2",
     "react-dom": "^16.4.0",
     "react-markdown": "^3.4.1",
     "react-router-dom": "^4.2.2",
@@ -61,7 +61,7 @@
     "lint": "eslint src",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "precommit": "pretty-quick --staged"
+    "precommit": "node scripts/precommit.js < /dev/tty"
   },
   "devDependencies": {
     "all-contributors-cli": "^4.11.1",

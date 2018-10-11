@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import {
   Fieldset,
   FlatButton,
@@ -19,18 +19,6 @@ import Root from '../markdown-renderers/Root';
 import Paragraph from '../markdown-renderers/Paragraph';
 import { getNewScore } from '../../helpers/helpers';
 const ReactMarkdown = require('react-markdown');
-
-const NavigationButton = props =>
-  withRouter(({ history }) => (
-    <FlatButton
-      disabled={!props.enabled}
-      onClick={() => {
-        history.push(props.destination);
-      }}
-    >
-      {props.label}
-    </FlatButton>
-  ))(props);
 
 export class Question extends Component {
   static propTypes = {
@@ -51,24 +39,15 @@ export class Question extends Component {
     score: PropTypes.object.isRequired,
     updateScore: PropTypes.func.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
       userAnswerId: null,
-      answerSubmitted: null,
+      answerSubmitted: false,
       error: false,
       correctAnswer: null,
       explanationRequested: false,
-      navigation: {
-        previous: {
-          enabled: this.props.index > 1,
-          url: this.props.baseUrl + '/q' + (this.props.index - 1),
-        },
-        next: {
-          enabled: this.props.index < this.props.numberOfQuestions,
-          url: this.props.baseUrl + '/q' + (this.props.index + 1),
-        },
-      },
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -95,29 +74,25 @@ export class Question extends Component {
   }
 
   handleSubmit(event) {
-    let currentAnswer = this.props.question.answers.find(
-      a => a.id == this.state.userAnswerId
-    );
+    const { question } = this.props;
+    const { userAnswerId } = this.state;
+    const currentAnswer = question.answers.find(a => a.id == userAnswerId);
 
-    if (this.state.userAnswerId === null) {
+    // User did not select an answer
+    if (userAnswerId === null) {
       this.setState({
         error: true,
       });
     } else {
-      this.setState(
-        {
-          answerSubmitted: true,
-          error: false,
-          correctAnswer:
-            this.props.question.correctAnswerId === currentAnswer.id,
-        },
-        () => {
-          this.calcNewScore(
-            this.props.question.correctAnswerId === currentAnswer.id
-          );
-        }
-      );
+      const userAnswerIsCorrect = question.correctAnswerId === currentAnswer.id;
+      this.setState({
+        answerSubmitted: true,
+        error: false,
+        correctAnswer: userAnswerIsCorrect,
+      });
+      this.calcNewScore(userAnswerIsCorrect);
     }
+
     event.preventDefault();
   }
 
@@ -130,24 +105,16 @@ export class Question extends Component {
   }
 
   handleKeyDown(event) {
-    /* assign navigation variables */
-    const { previous, next } = this.state.navigation;
+    const { question, history } = this.props;
     const actions = {
-      ArrowLeft: { route: previous },
-      ArrowRight: { route: next },
+      ArrowLeft: question.prevUrl,
+      ArrowRight: question.nextUrl,
     };
 
-    /* handle navigation */
-    if (actions.hasOwnProperty(event.key)) {
-      const { route } = actions[event.key];
-      if (route.enabled) {
-        this.props.history.push(route.url);
-        return;
-      }
+    const url = actions[event.key];
+    if (url) {
+      history.push(url);
     }
-
-    /* re-register listener if navigation did not occur */
-    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   toggleExplanationRequest() {
@@ -163,15 +130,21 @@ export class Question extends Component {
   }
 
   render() {
-    const { answerSubmitted, userAnswerId, explanationRequested } = this.state;
     const { question, numberOfQuestions, index } = this.props;
-    const navigation = this.state.navigation;
+    const {
+      answerSubmitted,
+      userAnswerId,
+      explanationRequested,
+      error,
+      correctAnswer,
+    } = this.state;
+
     let message;
-    if (this.state.error) {
+    if (error) {
       message = 'Please select an answer';
-    } else if (this.state.correctAnswer) {
+    } else if (correctAnswer) {
       message = 'Correct!';
-    } else if (this.state.correctAnswer === false) {
+    } else if (correctAnswer === false) {
       // not undefined
       message = 'Incorrect! Try Again!';
     }
@@ -291,18 +264,20 @@ export class Question extends Component {
           </form>
           <MessageWrapper>{message}</MessageWrapper>
         </Wrapper>
-        {/* className="navigation" */}
+
         <Section>
-          <NavigationButton
-            label="Previous"
-            destination={navigation.previous.url}
-            enabled={navigation.previous.enabled}
-          />
-          <NavigationButton
-            label="Next"
-            destination={navigation.next.url}
-            enabled={navigation.next.enabled}
-          />
+          {question.prevUrl ? (
+            <Link to={question.prevUrl}>
+              <FlatButton disabled={false}>
+                {question.prevButtonLabel}
+              </FlatButton>
+            </Link>
+          ) : (
+            <FlatButton disabled={true}>{question.prevButtonLabel}</FlatButton>
+          )}
+          <Link to={question.nextUrl}>
+            <FlatButton disabled={false}>{question.nextButtonLabel}</FlatButton>
+          </Link>
         </Section>
       </React.Fragment>
     );

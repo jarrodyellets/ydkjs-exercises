@@ -9,6 +9,7 @@ class BookRouter extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
   };
+
   render() {
     const { book } = this.props;
     return (

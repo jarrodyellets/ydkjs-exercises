@@ -22,7 +22,7 @@ class ChapterRouter extends Component {
 
     if (chapter.questions) {
       displayQuestions = chapter.questions.map((question, index) => {
-        let questionPath = chapterPath + '/q' + (index + 1);
+        let questionPath = `${chapterPath}/q${index + 1}`;
 
         return (
           <Route

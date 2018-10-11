@@ -4,8 +4,8 @@ import { score } from '../score-context';
 import { Question } from '../components/Question';
 import books from '../data';
 
-const upGoingCh1Q1 = books[0].chapters[0].questions[0];
-const typesGrammarCh2Q1 = books[3].chapters[1].questions[0];
+const [upGoingCh1Q1] = books[0].chapters[0].questions;
+const [typesGrammarCh2Q1] = books[3].chapters[1].questions;
 const baseUrl = '/up-going/ch1';
 const index = 1;
 const bookId = 0;
@@ -67,7 +67,6 @@ it('should render question 1', () => {
       .props().source
   ).toBe('Four');
   expect(comp.find('SubmitButton').length).toBe(1);
-  expect(comp.find('NavigationButton').length).toBe(2);
 });
 
 it('should render question 2', () => {
@@ -93,7 +92,6 @@ it('should render question 2', () => {
       .props().source
   ).toBe('True');
   expect(comp.find('SubmitButton').length).toBe(1);
-  expect(comp.find('NavigationButton').length).toBe(2);
 });
 it('should set answer state', () => {
   const comp = shallow(<Question {...generateTestProps(upGoingCh1Q1)} />);

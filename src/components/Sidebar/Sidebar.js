@@ -60,30 +60,36 @@ export default class Sidebar extends Component {
     return (
       <Fragment>
         {!shouldShow && (
-          <div
+          <button
             onClick={onMenuClick}
             style={{
               position: 'fixed',
               cursor: 'pointer',
               margin: '.5rem',
+              border: 0,
+              background: 'transparent',
             }}
           >
             <Menu />
-          </div>
+          </button>
         )}
         <SidebarGridChild
           isNarrowScreen={isNarrowScreen}
           shouldShow={shouldShow}
         >
-          <div
+          <button
             onClick={onMenuClick}
             style={{
               textAlign: 'right',
-              margin: '10px 10px 0 0',
+              marginTop: '10px',
+              border: 0,
+              background: 'transparent',
+              position: 'absolute',
+              right: '10px',
             }}
           >
             <Close data-name="svg" />
-          </div>
+          </button>
           {shouldShow && (
             <List>
               <ListItemTitle>Progress</ListItemTitle>
@@ -113,8 +119,8 @@ export default class Sidebar extends Component {
 
                 return (
                   <DrawerMenu
-                    key={'b' + index}
-                    id={'b' + index}
+                    key={`b${index}`}
+                    id={`b${index}`}
                     to={book.url}
                     nest={1}
                     title={
@@ -129,8 +135,8 @@ export default class Sidebar extends Component {
                         const to = `${book.url}${chapter.url}/q1`;
                         return (
                           <DrawerMenu
-                            key={'c' + index}
-                            id={'c' + index}
+                            key={`c${index}`}
+                            id={`c${index}`}
                             to={to}
                             nest={2}
                             title={
@@ -145,8 +151,8 @@ export default class Sidebar extends Component {
                                   1}`;
                                 return (
                                   <DrawerMenu
-                                    key={'q' + index}
-                                    id={'q' + index}
+                                    key={`q${index}`}
+                                    id={`q${index}`}
                                     to={to}
                                     nest={3}
                                     title={
